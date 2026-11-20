@@ -5,12 +5,12 @@ struct ContentView: View {
         TabView {
             DashboardView()
                 .tabItem { Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis") }
+            ScannerView()
+                .tabItem { Label("Scanner", systemImage: "scope") }
             SignalsView()
                 .tabItem { Label("Signals", systemImage: "waveform.path.ecg") }
             OrdersView()
                 .tabItem { Label("Orders", systemImage: "list.bullet.rectangle") }
-            LogView()
-                .tabItem { Label("Log", systemImage: "doc.text") }
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
         }
