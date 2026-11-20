@@ -91,6 +91,62 @@ struct AlpacaClient {
         return Array((resp.bars ?? []).reversed())
     }
 
+    /// Daily (or other) bars for many symbols in one request, following pagination.
+    func multiBars(symbols: [String], timeframe: String, start: Date) async throws -> [String: [Bar]] {
+        guard !symbols.isEmpty else { return [:] }
+        let iso = ISO8601DateFormatter()
+        var result: [String: [Bar]] = [:]
+        var token: String?
+        var pages = 0
+        repeat {
+            var items = [
+                URLQueryItem(name: "symbols", value: symbols.joined(separator: ",")),
+                URLQueryItem(name: "timeframe", value: timeframe),
+                URLQueryItem(name: "start", value: iso.string(from: start)),
+                URLQueryItem(name: "limit", value: "10000"),
+                URLQueryItem(name: "feed", value: "iex"),
+            ]
+            if let token { items.append(URLQueryItem(name: "page_token", value: token)) }
+            let resp: MultiBarsResponse = try await send(url(Self.dataBase, "/v2/stocks/bars", items))
+            for (symbol, bars) in resp.bars ?? [:] {
+                result[symbol, default: []] += bars
+            }
+            token = resp.nextPageToken
+            pages += 1
+        } while token != nil && pages < 10
+        return result
+    }
+
+    // MARK: Screener & news
+
+    func movers(top: Int = 50) async throws -> MoversResponse {
+        try await send(url(Self.dataBase, "/v1beta1/screener/stocks/movers", [
+            URLQueryItem(name: "top", value: String(top)),
+        ]))
+    }
+
+    func mostActives(top: Int = 100) async throws -> MostActivesResponse {
+        try await send(url(Self.dataBase, "/v1beta1/screener/stocks/most-actives", [
+            URLQueryItem(name: "by", value: "volume"),
+            URLQueryItem(name: "top", value: String(top)),
+        ]))
+    }
+
+    /// Latest news, newest first. Pass nil symbols for all market news.
+    func news(symbols: [String]?, start: Date, limit: Int = 50) async throws -> [NewsItem] {
+        let iso = ISO8601DateFormatter()
+        var items = [
+            URLQueryItem(name: "start", value: iso.string(from: start)),
+            URLQueryItem(name: "limit", value: String(min(limit, 50))),
+            URLQueryItem(name: "sort", value: "desc"),
+        ]
+        if let symbols, !symbols.isEmpty {
+            items.append(URLQueryItem(name: "symbols", value: symbols.joined(separator: ",")))
+        }
+        let resp: NewsResponse = try await send(url(Self.dataBase, "/v1beta1/news", items))
+        return resp.news
+    }
+
     // MARK: Plumbing
 
     private func url(_ base: String, _ path: String, _ items: [URLQueryItem] = []) -> URL {
