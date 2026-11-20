@@ -1,9 +1,23 @@
+# Builds an unsigned AlpacaRSIBot.ipa on GitHub's macOS runners.
+# Download it from the run's "Artifacts" section, then sign & install it
+# on your iPhone from Windows with Sideloadly (see README).
 name: Build iPhone app (IPA)
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths-ignore:
+      - "catalysts.json"
+      - "scan/**"
+      - "scripts/**"
+      - "README.md"
+      - ".github/workflows/daily-scan.yml"
+
+# A newer commit cancels an older build that's still waiting or running.
+concurrency:
+  group: build-ipa
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -11,6 +25,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
 
       - name: Build (unsigned)
         run: |
