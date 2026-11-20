@@ -1,0 +1,22 @@
+{
+  "updated": "2026-11-19",
+  "note": "Target dates come from company releases and public PDUFA trackers. A PDUFA date is the FDA's goal date, not a guaranteed decision; the FDA can act early, late or extend it.",
+  "events": [
+    {"date": "2026-11-22", "ticker": "SVRA", "company": "Savara", "drug": "molgramostim", "indication": "Autoimmune pulmonary alveolar proteinosis", "type": "PDUFA", "note": "BLA; date falls on a Sunday"},
+    {"date": "2026-11-22", "ticker": "CAPR", "company": "Capricor", "drug": "deramiocel", "indication": "Duchenne muscular dystrophy", "type": "PDUFA", "note": "BLA; extended from Aug 22 after major amendment"},
+    {"date": "2026-11-25", "ticker": "SNY", "company": "Sanofi", "drug": "venglustat", "indication": "Type 3 Gaucher disease", "type": "PDUFA", "note": "NDA"},
+    {"date": "2026-11-27", "ticker": "BBIO", "company": "BridgeBio", "drug": "BBP-418", "indication": "Limb-girdle muscular dystrophy 2I/R9", "type": "PDUFA", "note": "NDA; Priority Review"},
+    {"date": "2026-11-27", "ticker": "GSK", "company": "GSK", "drug": "neladalkib", "indication": "ALK-positive non-small cell lung cancer", "type": "PDUFA", "note": "NDA"},
+    {"date": "2026-11-28", "ticker": "PYPD", "company": "PolyPid", "drug": "D-PLEX 100", "indication": "Surgical site infection prevention", "type": "PDUFA", "note": "NDA; date falls on a Saturday"},
+    {"date": "2026-11-30", "ticker": "COGT", "company": "Cogent Biosciences", "drug": "bezuclastinib + sunitinib", "indication": "GIST after imatinib", "type": "PDUFA", "note": "NDA"},
+    {"date": "2026-11-30", "ticker": "VRTX", "company": "Vertex", "drug": "povetacicept", "indication": "IgA nephropathy", "type": "PDUFA", "note": "BLA, accelerated approval; Priority Review"},
+    {"date": "2026-12-12", "ticker": "VNDA", "company": "Vanda / AnaptysBio (ANAB)", "drug": "imsidolimab (Quimilza)", "indication": "Generalized pustular psoriasis", "type": "PDUFA", "note": "BLA"},
+    {"date": "2026-12-12", "ticker": "COGT", "company": "ASH 2026 (Dec 12-15)", "drug": "Hematology conference", "indication": "Data presentations from many blood-cancer names", "type": "Conference", "note": "Cogent presenting bezuclastinib posters"},
+    {"date": "2026-12-17", "ticker": "CORT", "company": "Corcept", "drug": "relacorilant", "indication": "Cushing's syndrome", "type": "PDUFA", "note": "NDA resubmission"},
+    {"date": "2026-12-22", "ticker": "MLYS", "company": "Mineralys", "drug": "lorundrostat", "indication": "Uncontrolled / resistant hypertension", "type": "PDUFA", "note": "NDA"},
+    {"date": "2026-12-23", "ticker": "GILD", "company": "Gilead (Arcellx)", "drug": "anito-cel", "indication": "Relapsed/refractory multiple myeloma", "type": "PDUFA", "note": "CAR-T BLA"},
+    {"date": "2026-12-27", "ticker": "PRAX", "company": "Praxis Precision", "drug": "relutrigine", "indication": "SCN2A/SCN8A epileptic encephalopathies", "type": "PDUFA", "note": "Moved from Sep 27"},
+    {"date": "2026-12-27", "ticker": "VTRS", "company": "Viatris", "drug": "MR-107A-02 (fast-acting meloxicam)", "indication": "Moderate-to-severe acute pain", "type": "PDUFA", "note": "NDA"},
+    {"date": "2026-12-30", "ticker": "COGT", "company": "Cogent Biosciences", "drug": "bezuclastinib", "indication": "Non-advanced systemic mastocytosis", "type": "PDUFA", "note": "NDA"}
+  ]
+}
