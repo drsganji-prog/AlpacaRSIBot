@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+/* Begin PBXBuildFile section */
+		D0171D302A86A8FFD805FD5E /* AlpacaRSIBotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF777B8D2F39E6BF5BE386A6 /* AlpacaRSIBotApp.swift */; };
+		E0FADF967BE69B1E9F5982E1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EFE066E4E15DF67EF08EE /* Models.swift */; };
+		2ED6108242D3588CD4442F2F /* AlpacaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A425D3D33DE353E199A007E /* AlpacaClient.swift */; };
+		376C05E52DE7ACF097E971F6 /* RSI.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAB37EE4E64C01B7F9F3BD8 /* RSI.swift */; };
+		73DCA6923DF88C2ECD383D71 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2719766092A167BB8D5A5B /* Keychain.swift */; };
+		6FA44328376F8824CB359DE8 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014F03E627210915298B8D51 /* Settings.swift */; };
+		EC8481CFBEE269BF05632790 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1FE95A29D9FF4A5A3B8E69 /* Notifier.swift */; };
+		B2B4DFBFC579D6CAE98A45FE /* BotEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831AC8D7B214360A6C5D2983 /* BotEngine.swift */; };
+		FB73BE2A7887F32D512EC848 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2D059072C1E33E64D7DCDF /* ContentView.swift */; };
+		67387580D18CEDF2DBA04ADA /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484F15624DBA2BD3DE8D617 /* DashboardView.swift */; };
+		218CFE71BD6DEBB59E1C639B /* SignalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926892291C1AD2BF83D3D366 /* SignalsView.swift */; };
+		4361FA50CDB9CF0E57799ED0 /* OrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5024EA836225B5780704EC1 /* OrdersView.swift */; };
+		9B97663C681680E6745A4A37 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11DD2CBC2C423D39D7DC57F /* LogView.swift */; };
+		C24299D89D285E985C089C0F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344231C687A1F4BDC84AE838 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DF777B8D2F39E6BF5BE386A6 /* AlpacaRSIBotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlpacaRSIBotApp.swift; sourceTree = "<group>"; };
+		8B4EFE066E4E15DF67EF08EE /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0A425D3D33DE353E199A007E /* AlpacaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlpacaClient.swift; sourceTree = "<group>"; };
+		ABAB37EE4E64C01B7F9F3BD8 /* RSI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSI.swift; sourceTree = "<group>"; };
+		AE2719766092A167BB8D5A5B /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		014F03E627210915298B8D51 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		9F1FE95A29D9FF4A5A3B8E69 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
+		831AC8D7B214360A6C5D2983 /* BotEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotEngine.swift; sourceTree = "<group>"; };
+		4D2D059072C1E33E64D7DCDF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F484F15624DBA2BD3DE8D617 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		926892291C1AD2BF83D3D366 /* SignalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsView.swift; sourceTree = "<group>"; };
+		A5024EA836225B5780704EC1 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
+		C11DD2CBC2C423D39D7DC57F /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		344231C687A1F4BDC84AE838 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		399D0FEC7E1065D061E1CBAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5BF48AA40CAD7891EB709FC /* AlpacaRSIBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlpacaRSIBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4F6F5CC3FCCF73F75AE9CCF4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FAD58DE7366495DB4650CFEF = {
+			isa = PBXGroup;
+			children = (
+				20F4BD606C0F6D1645AE4919,
+				86024CAD1E83101D97359D73,
+			);
+			sourceTree = "<group>";
+		};
+		20F4BD606C0F6D1645AE4919 /* AlpacaRSIBot */ = {
+			isa = PBXGroup;
+			children = (
+				DF777B8D2F39E6BF5BE386A6,
+				8B4EFE066E4E15DF67EF08EE,
+				0A425D3D33DE353E199A007E,
+				ABAB37EE4E64C01B7F9F3BD8,
+				AE2719766092A167BB8D5A5B,
+				014F03E627210915298B8D51,
+				9F1FE95A29D9FF4A5A3B8E69,
+				831AC8D7B214360A6C5D2983,
+				59A14A5786FE7A105D780BB1,
+				399D0FEC7E1065D061E1CBAC,
+			);
+			path = AlpacaRSIBot;
+			sourceTree = "<group>";
+		};
+		59A14A5786FE7A105D780BB1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4D2D059072C1E33E64D7DCDF,
+				F484F15624DBA2BD3DE8D617,
+				926892291C1AD2BF83D3D366,
+				A5024EA836225B5780704EC1,
+				C11DD2CBC2C423D39D7DC57F,
+				344231C687A1F4BDC84AE838,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		86024CAD1E83101D97359D73 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F5BF48AA40CAD7891EB709FC,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42AEFBAE01D2DFD981F7DA7D /* AlpacaRSIBot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7ACCC06EB85B0190BD168A1E;
+			buildPhases = (
+				F2AB5FB218DA8B84623F4557 /* Sources */,
+				4F6F5CC3FCCF73F75AE9CCF4 /* Frameworks */,
+				55B558C7EF820E6E00E5993B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AlpacaRSIBot;
+			productName = AlpacaRSIBot;
+			productReference = F5BF48AA40CAD7891EB709FC /* AlpacaRSIBot.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					42AEFBAE01D2DFD981F7DA7D = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 9873F885523C5B8D7C91F5AE;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FAD58DE7366495DB4650CFEF;
+			productRefGroup = 86024CAD1E83101D97359D73 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42AEFBAE01D2DFD981F7DA7D /* AlpacaRSIBot */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55B558C7EF820E6E00E5993B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F2AB5FB218DA8B84623F4557 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0171D302A86A8FFD805FD5E /* AlpacaRSIBotApp.swift in Sources */,
+				E0FADF967BE69B1E9F5982E1 /* Models.swift in Sources */,
+				2ED6108242D3588CD4442F2F /* AlpacaClient.swift in Sources */,
+				376C05E52DE7ACF097E971F6 /* RSI.swift in Sources */,
+				73DCA6923DF88C2ECD383D71 /* Keychain.swift in Sources */,
+				6FA44328376F8824CB359DE8 /* Settings.swift in Sources */,
+				EC8481CFBEE269BF05632790 /* Notifier.swift in Sources */,
+				B2B4DFBFC579D6CAE98A45FE /* BotEngine.swift in Sources */,
+				FB73BE2A7887F32D512EC848 /* ContentView.swift in Sources */,
+				67387580D18CEDF2DBA04ADA /* DashboardView.swift in Sources */,
+				218CFE71BD6DEBB59E1C639B /* SignalsView.swift in Sources */,
+				4361FA50CDB9CF0E57799ED0 /* OrdersView.swift in Sources */,
+				9B97663C681680E6745A4A37 /* LogView.swift in Sources */,
+				C24299D89D285E985C089C0F /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B69466B536F8CE43B6356EC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		64E1E1CBE1CA8E88EF3A838A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		626726E60BD1215F36719A30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AlpacaRSIBot/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "RSI Bot";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.AlpacaRSIBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E7D707A26E7F7B6FF52C489C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AlpacaRSIBot/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "RSI Bot";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.AlpacaRSIBot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9873F885523C5B8D7C91F5AE = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B69466B536F8CE43B6356EC1 /* Debug */,
+				64E1E1CBE1CA8E88EF3A838A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7ACCC06EB85B0190BD168A1E = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				626726E60BD1215F36719A30 /* Debug */,
+				E7D707A26E7F7B6FF52C489C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}
