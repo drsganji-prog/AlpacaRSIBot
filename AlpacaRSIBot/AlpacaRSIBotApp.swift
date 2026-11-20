@@ -5,6 +5,7 @@ import BackgroundTasks
 struct AlpacaRSIBotApp: App {
     @StateObject private var store = SettingsStore.shared
     @StateObject private var engine = BotEngine.shared
+    @StateObject private var scanner = ScannerEngine.shared
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
@@ -12,6 +13,7 @@ struct AlpacaRSIBotApp: App {
             ContentView()
                 .environmentObject(store)
                 .environmentObject(engine)
+                .environmentObject(scanner)
                 .task { await Notifier.requestPermission() }
         }
         .onChange(of: scenePhase) { _, phase in
