@@ -3,6 +3,7 @@ import SwiftUI
 struct DashboardView: View {
     @EnvironmentObject var engine: BotEngine
     @EnvironmentObject var store: SettingsStore
+    @State private var showLog = false
 
     var body: some View {
         NavigationStack {
@@ -73,9 +74,15 @@ struct DashboardView: View {
             .refreshable { await engine.refresh() }
             .task { await engine.refresh() }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showLog = true } label: { Label("Log", systemImage: "doc.text") }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     if engine.isBusy { ProgressView() }
                 }
+            }
+            .sheet(isPresented: $showLog) {
+                LogView().environmentObject(engine)
             }
         }
     }
