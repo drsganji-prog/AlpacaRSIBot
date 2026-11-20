@@ -1,0 +1,37 @@
+name: Build iPhone app (IPA)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (unsigned)
+        run: |
+          xcodebuild \
+            -project AlpacaRSIBot.xcodeproj \
+            -target AlpacaRSIBot \
+            -configuration Release \
+            -sdk iphoneos \
+            SYMROOT="$PWD/build" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Release-iphoneos/AlpacaRSIBot.app Payload/
+          zip -qry AlpacaRSIBot.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AlpacaRSIBot-ipa
+          path: AlpacaRSIBot.ipa
