@@ -10,6 +10,24 @@ Every N minutes (default 5) for each symbol (default SPY, AAPL, MSFT):
 
 **Auto-trade is OFF by default.** The bot shows signals only until you turn it on in Settings.
 
+## Scanner tab
+- **Market:** top gainers, top losers, most active, plus RSI oversold or overbought stocks from a list of about 55 liquid names. Penny stocks are filtered out by a minimum price.
+- **Biotech:** a watchlist of about 60 biotech tickers, showing daily % change, relative volume (vs. the 20-day average), RSI and tags (🔥 unusual activity, 📅 upcoming catalyst, 📰 news). It also shows a **catalyst news** feed tagged FDA / Trial / M&A / Offering.
+- **Upcoming catalysts (next 14 days):** read from `catalysts.json` in this repo. Edit that file on GitHub to add or change events, with no rebuild needed. The app also picks up dates mentioned in news headlines, e.g. "PDUFA date of December 2"; it marks these "From news", so verify them before trading.
+- Swipe a row left to **add it to the bot's watchlist**.
+
+## Automatic daily jobs
+- **5:40 AM PT, FDA calendar update:** a Claude scheduled task researches PDUFA dates, AdComs and readouts for the next 30 days and updates `catalysts.json`. It needs GitHub linked to Claude so it can push.
+- **6:15 AM PT, morning scan:** `.github/workflows/daily-scan.yml` runs `scripts/daily_scan.py` on GitHub. The scan covers market movers, RSI extremes, biotech activity, the catalyst calendar and FDA news. It saves the results to `scan/latest.json`, which the app shows under **Scanner → Morning**, and sends an iPhone notification through the free **ntfy** app. GitHub can start scheduled jobs a few minutes late.
+
+One-time setup for the morning scan:
+1. Repo **Settings → Secrets and variables → Actions → New repository secret**. Add:
+   - `ALPACA_KEY_ID`: your Alpaca paper Key ID
+   - `ALPACA_SECRET`: your Alpaca paper Secret
+   - `NTFY_TOPIC`: a hard-to-guess name you make up, e.g. `rsibot-yourname-8k2q`
+2. On the iPhone, install **ntfy** from the App Store, tap **+**, and subscribe to that same topic name.
+3. **Actions → Daily morning scan → Run workflow** to test it now. You should get a notification within about a minute.
+
 ## Setup on Windows (no Mac needed)
 GitHub builds the app on one of its cloud Macs. Then Sideloadly installs it on your iPhone from your Windows PC.
 
