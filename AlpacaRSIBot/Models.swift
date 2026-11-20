@@ -50,11 +50,93 @@ struct Order: Decodable, Identifiable {
 
     var submittedDate: Date? {
         guard let submittedAt else { return nil }
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        if let d = f.date(from: submittedAt) { return d }
-        f.formatOptions = [.withInternetDateTime]
-        return f.date(from: submittedAt)
+        return parseISODate(submittedAt)
+    }
+}
+
+func parseISODate(_ string: String) -> Date? {
+    let f = ISO8601DateFormatter()
+    f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    if let d = f.date(from: string) { return d }
+    f.formatOptions = [.withInternetDateTime]
+    return f.date(from: string)
+}
+
+// MARK: - Screener / news models
+
+struct Mover: Decodable {
+    let symbol: String
+    let percentChange: Double
+    let change: Double
+    let price: Double
+}
+
+struct MoversResponse: Decodable {
+    let gainers: [Mover]
+    let losers: [Mover]
+}
+
+struct MostActive: Decodable {
+    let symbol: String
+    let volume: Double
+}
+
+struct MostActivesResponse: Decodable {
+    let mostActives: [MostActive]
+}
+
+struct MultiBarsResponse: Decodable {
+    let bars: [String: [Bar]]?
+    let nextPageToken: String?
+}
+
+struct NewsItem: Decodable {
+    let id: Int
+    let headline: String
+    let summary: String?
+    let source: String?
+    let url: String?
+    let createdAt: String
+    let symbols: [String]
+
+    var date: Date? { parseISODate(createdAt) }
+}
+
+struct NewsResponse: Decodable {
+    let news: [NewsItem]
+    let nextPageToken: String?
+}
+
+struct CatalystNews: Identifiable {
+    var id: Int { item.id }
+    let item: NewsItem
+    let tags: [String]
+}
+
+struct ScanRow: Identifiable {
+    var id: String { symbol }
+    let symbol: String
+    var price: Double
+    var changePct: Double
+    let volume: Double
+    let relVolume: Double?
+    let rsi: Double?
+    var tags: [String] = []
+
+    /// Builds a row from daily bars (oldest → newest).
+    static func make(symbol: String, bars: [Bar], rsiPeriod: Int = 14) -> ScanRow? {
+        guard bars.count >= 2, let last = bars.last else { return nil }
+        let prev = bars[bars.count - 2].c
+        let history = bars.dropLast().suffix(20).map(\.v)
+        let avgVolume = history.isEmpty ? 0 : history.reduce(0, +) / Double(history.count)
+        return ScanRow(
+            symbol: symbol,
+            price: last.c,
+            changePct: prev > 0 ? (last.c - prev) / prev * 100 : 0,
+            volume: last.v,
+            relVolume: avgVolume > 0 ? last.v / avgVolume : nil,
+            rsi: RSI.compute(closes: bars.map(\.c), period: rsiPeriod)
+        )
     }
 }
 
