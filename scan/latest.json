@@ -1,0 +1,647 @@
+{
+ "generated": "2026-11-20T02:59:22+00:00",
+ "generatedLocal": "Thu Nov 19, 6:59 PM PT",
+ "calendarUpdated": "2026-11-19",
+ "catalysts": [
+  {
+   "date": "2026-11-22",
+   "ticker": "SVRA",
+   "company": "Savara",
+   "drug": "molgramostim",
+   "indication": "Autoimmune pulmonary alveolar proteinosis",
+   "type": "PDUFA",
+   "note": "BLA; date falls on a Sunday",
+   "daysAway": 3,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-22",
+   "ticker": "CAPR",
+   "company": "Capricor",
+   "drug": "deramiocel",
+   "indication": "Duchenne muscular dystrophy",
+   "type": "PDUFA",
+   "note": "BLA; extended from Aug 22 after major amendment",
+   "daysAway": 3,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-25",
+   "ticker": "SNY",
+   "company": "Sanofi",
+   "drug": "venglustat",
+   "indication": "Type 3 Gaucher disease",
+   "type": "PDUFA",
+   "note": "NDA",
+   "daysAway": 6,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-27",
+   "ticker": "BBIO",
+   "company": "BridgeBio",
+   "drug": "BBP-418",
+   "indication": "Limb-girdle muscular dystrophy 2I/R9",
+   "type": "PDUFA",
+   "note": "NDA; Priority Review",
+   "daysAway": 8,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-27",
+   "ticker": "GSK",
+   "company": "GSK",
+   "drug": "neladalkib",
+   "indication": "ALK-positive non-small cell lung cancer",
+   "type": "PDUFA",
+   "note": "NDA",
+   "daysAway": 8,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-28",
+   "ticker": "PYPD",
+   "company": "PolyPid",
+   "drug": "D-PLEX 100",
+   "indication": "Surgical site infection prevention",
+   "type": "PDUFA",
+   "note": "NDA; date falls on a Saturday",
+   "daysAway": 9,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-30",
+   "ticker": "COGT",
+   "company": "Cogent Biosciences",
+   "drug": "bezuclastinib + sunitinib",
+   "indication": "GIST after imatinib",
+   "type": "PDUFA",
+   "note": "NDA",
+   "daysAway": 11,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-30",
+   "ticker": "VRTX",
+   "company": "Vertex",
+   "drug": "povetacicept",
+   "indication": "IgA nephropathy",
+   "type": "PDUFA",
+   "note": "BLA, accelerated approval; Priority Review",
+   "daysAway": 11,
+   "fromNews": false
+  },
+  {
+   "date": "2026-11-30",
+   "ticker": "SMMT",
+   "company": "fiscal.ai",
+   "drug": "Summit Therapeutics to Host Corporate Update and Operational Progress Call on November 30, 2026",
+   "indication": "Date found in news; verify",
+   "type": "News",
+   "note": null,
+   "daysAway": 11,
+   "fromNews": true
+  }
+ ],
+ "biotechUnusual": [
+  {
+   "symbol": "INSM",
+   "price": 144.46,
+   "changePct": 20.56,
+   "volume": 945066,
+   "relVolume": 4.52,
+   "rsi": 77.4,
+   "tags": [
+    "🔥 Unusual",
+    "Big gainer",
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "SVRA",
+   "price": 5.2,
+   "changePct": 9.82,
+   "volume": 608321,
+   "relVolume": 2.53,
+   "rsi": 58.8,
+   "tags": [
+    "📅 PDUFA in 3d",
+    "🔥 Unusual"
+   ]
+  }
+ ],
+ "biotechTop": [
+  {
+   "symbol": "INSM",
+   "price": 144.46,
+   "changePct": 20.56,
+   "volume": 945066,
+   "relVolume": 4.52,
+   "rsi": 77.4,
+   "tags": [
+    "🔥 Unusual",
+    "Big gainer",
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "SVRA",
+   "price": 5.2,
+   "changePct": 9.82,
+   "volume": 608321,
+   "relVolume": 2.53,
+   "rsi": 58.8,
+   "tags": [
+    "📅 PDUFA in 3d",
+    "🔥 Unusual"
+   ]
+  },
+  {
+   "symbol": "CAPR",
+   "price": 7.53,
+   "changePct": -6.34,
+   "volume": 277270,
+   "relVolume": 1.63,
+   "rsi": 46.1,
+   "tags": [
+    "📅 PDUFA in 3d"
+   ]
+  },
+  {
+   "symbol": "SANA",
+   "price": 1.74,
+   "changePct": -5.95,
+   "volume": 327158,
+   "relVolume": 1.67,
+   "rsi": 27.6,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "ASND",
+   "price": 255.74,
+   "changePct": -5.39,
+   "volume": 91968,
+   "relVolume": 1.79,
+   "rsi": 51.4,
+   "tags": []
+  },
+  {
+   "symbol": "VERA",
+   "price": 26.75,
+   "changePct": 4.57,
+   "volume": 63638,
+   "relVolume": 0.72,
+   "rsi": 40.0,
+   "tags": []
+  },
+  {
+   "symbol": "CORT",
+   "price": 65.0,
+   "changePct": -4.09,
+   "volume": 50890,
+   "relVolume": 0.64,
+   "rsi": 21.3,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "NBIX",
+   "price": 156.59,
+   "changePct": -3.82,
+   "volume": 59987,
+   "relVolume": 0.67,
+   "rsi": 49.4,
+   "tags": []
+  },
+  {
+   "symbol": "EXEL",
+   "price": 65.84,
+   "changePct": -3.56,
+   "volume": 173841,
+   "relVolume": 1.13,
+   "rsi": 47.0,
+   "tags": []
+  },
+  {
+   "symbol": "RXRX",
+   "price": 2.72,
+   "changePct": -3.55,
+   "volume": 4171390,
+   "relVolume": 3.32,
+   "rsi": 34.4,
+   "tags": []
+  }
+ ],
+ "gainers": [
+  {
+   "symbol": "FVNNU",
+   "price": 70.3,
+   "changePct": 84.27,
+   "volume": 0,
+   "relVolume": null,
+   "rsi": 91.0,
+   "tags": [
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "MACIU",
+   "price": 13.06,
+   "changePct": 43.2,
+   "volume": 100,
+   "relVolume": null,
+   "rsi": 100.0,
+   "tags": [
+    "Big gainer",
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "IPFXU",
+   "price": 16.14,
+   "changePct": 35.86,
+   "volume": 221,
+   "relVolume": null,
+   "rsi": 99.6,
+   "tags": [
+    "Big gainer",
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "UVIX",
+   "price": 57.04,
+   "changePct": 24.22,
+   "volume": 29029,
+   "relVolume": 0.73,
+   "rsi": 63.8,
+   "tags": [
+    "Big gainer"
+   ]
+  },
+  {
+   "symbol": "PDDL",
+   "price": 12.49,
+   "changePct": 22.21,
+   "volume": 635,
+   "relVolume": 4.67,
+   "rsi": 63.7,
+   "tags": [
+    "🔥 Unusual",
+    "Big gainer"
+   ]
+  },
+  {
+   "symbol": "INSM",
+   "price": 144.46,
+   "changePct": 20.58,
+   "volume": 945066,
+   "relVolume": 4.52,
+   "rsi": 77.4,
+   "tags": [
+    "🔥 Unusual",
+    "Big gainer",
+    "Overbought"
+   ]
+  }
+ ],
+ "losers": [
+  {
+   "symbol": "BKHAU",
+   "price": 11.35,
+   "changePct": -41.71,
+   "volume": 100,
+   "relVolume": null,
+   "rsi": 95.2,
+   "tags": [
+    "Big gainer",
+    "Overbought"
+   ]
+  },
+  {
+   "symbol": "SA",
+   "price": 18.06,
+   "changePct": -29.32,
+   "volume": 175848,
+   "relVolume": 4.29,
+   "rsi": 28.5,
+   "tags": [
+    "🔥 Unusual",
+    "Big drop",
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "SNEX",
+   "price": 39.45,
+   "changePct": -26.71,
+   "volume": 352227,
+   "relVolume": 8.58,
+   "rsi": 19.0,
+   "tags": [
+    "🔥 Unusual",
+    "Big drop",
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "SAIH",
+   "price": 17,
+   "changePct": -25.24,
+   "volume": 946,
+   "relVolume": 8.64,
+   "rsi": 32.2,
+   "tags": [
+    "🔥 Unusual",
+    "Big drop"
+   ]
+  },
+  {
+   "symbol": "LQDT",
+   "price": 33.03,
+   "changePct": -24.88,
+   "volume": 95334,
+   "relVolume": 9.44,
+   "rsi": 21.9,
+   "tags": [
+    "🔥 Unusual",
+    "Big drop",
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "BKHA",
+   "price": 6.48,
+   "changePct": -24.74,
+   "volume": 238,
+   "relVolume": 0.51,
+   "rsi": 45.8,
+   "tags": [
+    "Big drop"
+   ]
+  }
+ ],
+ "oversold": [
+  {
+   "symbol": "NVDA",
+   "price": 145.99,
+   "changePct": -3.23,
+   "volume": 8068954,
+   "relVolume": 0.89,
+   "rsi": 20.0,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "CRM",
+   "price": 183.44,
+   "changePct": -3.65,
+   "volume": 458536,
+   "relVolume": 1.29,
+   "rsi": 22.2,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "UNH",
+   "price": 330.36,
+   "changePct": -5.59,
+   "volume": 998197,
+   "relVolume": 3.22,
+   "rsi": 24.2,
+   "tags": [
+    "🔥 Unusual",
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "COIN",
+   "price": 108.88,
+   "changePct": -1.51,
+   "volume": 232169,
+   "relVolume": 0.85,
+   "rsi": 25.4,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "CAT",
+   "price": 537.13,
+   "changePct": -3.91,
+   "volume": 190950,
+   "relVolume": 0.96,
+   "rsi": 27.1,
+   "tags": [
+    "Oversold"
+   ]
+  },
+  {
+   "symbol": "BA",
+   "price": 160.55,
+   "changePct": -1.44,
+   "volume": 387700,
+   "relVolume": 0.84,
+   "rsi": 28.2,
+   "tags": [
+    "Oversold"
+   ]
+  }
+ ],
+ "overbought": [],
+ "news": [
+  {
+   "headline": "Summit Therapeutics to Host Corporate Update and Operational Progress Call on November 30, 2026",
+   "url": "https://www.businesswire.com/newsroom/industry/health/clinical-trials",
+   "symbols": [
+    "SMMT"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T23:02:05Z"
+  },
+  {
+   "headline": "Gilead Sciences Executive Manny Rodriguez Named a 2027 Visionary",
+   "url": "https://www.noticiasnewswire.com/manny-rodriguez-of-gilead-sciences-to-be-recognized/",
+   "symbols": [
+    "GILD"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T21:32:02Z"
+  },
+  {
+   "headline": "Moderna Officer Stephen Hoge Sells $16.9 Million in Common Stock",
+   "url": "https://www.moomoo.com/stock/MRNA-US?chain_id=Name1K9-3FXPhg.1lfuaog&global_content=%7B%22promote_id%22%3A%22%22%2C%22sub_promote_id%22%3A64%2C%22subpromote_id%22%3A%22%22%2C%22f%22%3A%22www.moomoo.com%2Fcommunity%2Fprofile%2Fm-7-r-105564249%22%7D",
+   "symbols": [
+    "MRNA"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T20:02:01Z"
+  },
+  {
+   "headline": "Sanofi Reportedly Considering Acquisition of Insmed",
+   "url": "https://www.marketscreener.com/news/sanofi-said-to-consider-takeover-of-insmed-ce785ed2dd8cf120",
+   "symbols": [
+    "INSM"
+   ],
+   "tags": [
+    "M&A"
+   ],
+   "createdAt": "2026-11-19T19:02:11Z"
+  },
+  {
+   "headline": "Biogen and Eisai Present New Analysis of LEQEMBI Treatment and α-Synuclein Co-pathology",
+   "url": "https://investors.biogen.com/news-releases/news-release-details/clarity-ad-csf-substudy-findings-lecanemab-treatment-and",
+   "symbols": [
+    "BIIB"
+   ],
+   "tags": [
+    "Trial"
+   ],
+   "createdAt": "2026-11-19T19:02:09Z"
+  },
+  {
+   "headline": "Halozyme Provides Update on German Preliminary Injunction Hearing Regarding Keytruda SC",
+   "url": "https://www.prnewswire.com/news-releases/halozyme-provides-update-on-german-preliminary-injunction-hearing-302945598.html",
+   "symbols": [
+    "HALO"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T19:01:51Z"
+  },
+  {
+   "headline": "BofA Securities Identifies Viridian Therapeutics' Lumvoa as Competitor to Amgen's Tepezza",
+   "url": "https://www.moomoo.com/news/post/1005207462/viridian-therapeutics-lumvoa-emerging-as-rival-to-amgen-s-tepezza",
+   "symbols": [
+    "AMGN"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T19:01:28Z"
+  },
+  {
+   "headline": "Goldman Sachs Adjusts Regeneron Pharmaceuticals Price Target",
+   "url": "https://www.marketscreener.com/news/goldman-sachs-adjusts-regeneron-pharmaceuticals-pt-to-1-115-from-1-110-ce785ed2da88f024",
+   "symbols": [
+    "REGN"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T14:32:39Z"
+  },
+  {
+   "headline": "Sonic Incytes and Madrigal Pharmaceuticals Announce Multi-Year Partnership",
+   "url": "https://www.businesswire.com/newsroom/industry/health/pharmaceutical",
+   "symbols": [
+    "MDGL"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T14:32:03Z"
+  },
+  {
+   "headline": "Altimmune to Participate in the 9th Annual Evercore Healthcare Conference",
+   "url": "https://www.globenewswire.com/news-release/2026/11/19/3406524/0/en/altimmune-to-participate-in-the-9th-annual-evercore-healthcare-conference.html",
+   "symbols": [
+    "ALT"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T14:03:06Z"
+  },
+  {
+   "headline": "EcoR1 Capital Increases Stake in AnaptysBio",
+   "url": "https://mlq.ai/news/ecor1-buys-17-million-more-anaptysbio-stock-in-three-days-lifting-its-stake-to-28/",
+   "symbols": [
+    "ANAB"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T14:02:30Z"
+  },
+  {
+   "headline": "Roivant Sciences Insider Sold Shares Worth $53,536,738",
+   "url": "https://www.marketscreener.com/news/roivant-sciences-insider-sold-shares-worth-53-536-738-according-to-a-recent-sec-filing-ce785eddd080f220",
+   "symbols": [
+    "ROIV"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T14:01:50Z"
+  },
+  {
+   "headline": "Deutsche Bank Research maintains 'Hold' rating on argenx",
+   "url": "https://www.finanzen.at/analyse/argen-x-hold-1122084",
+   "symbols": [
+    "ARGX"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T13:02:06Z"
+  },
+  {
+   "headline": "Regeneron Highlights New Data for Hematology Programs at ASH",
+   "url": "https://www.globenewswire.com/news/heathcare/pharmaceuticals",
+   "symbols": [
+    "REGN"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T13:02:02Z"
+  },
+  {
+   "headline": "Axsome Therapeutics to Participate in Upcoming Investor Conferences",
+   "url": "https://www.morningstar.com/news/globe-newswire/9880898/axsome-therapeutics-to-participate-in-upcoming-investor-conferences",
+   "symbols": [
+    "AXSM"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T12:32:44Z"
+  },
+  {
+   "headline": "FDA Approves Alnylam-Discovered RNAi Therapeutic Livsayis™ (cemdisiran) for Generalized Myasthenia Gravis",
+   "url": "https://www.businesswire.com/newsroom/industry/health/clinical-trials",
+   "symbols": [
+    "ALNY"
+   ],
+   "tags": [
+    "FDA"
+   ],
+   "createdAt": "2026-11-19T12:32:24Z"
+  },
+  {
+   "headline": "Jefferies Maintains 'Hold' Rating on argenx SE",
+   "url": "https://www.finanzen.ch/analyse/argen-x-hold-1122084",
+   "symbols": [
+    "ARGX"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T10:03:23Z"
+  },
+  {
+   "headline": "FDA Approves Regeneron's Livsayis for Generalized Myasthenia Gravis",
+   "url": "https://investor.regeneron.com/news-releases/news-release-details/livsayistm-cemdisiran-approved-fda-first-and-only-sirna-therapy",
+   "symbols": [
+    "REGN"
+   ],
+   "tags": [
+    "FDA"
+   ],
+   "createdAt": "2026-11-19T03:01:47Z"
+  },
+  {
+   "headline": "Amgen Italia Presents Research on Cardiovascular Health and LDL Cholesterol Awareness",
+   "url": "https://www.milanofinanza.it/news/ricerca-amgen-censis-sugli-over-50-e-il-rapporto-del-colesterolo-ldl-con-la-salute-del-cuore-202611181837154488",
+   "symbols": [
+    "AMGN"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T01:01:39Z"
+  },
+  {
+   "headline": "Moderna Taiwan mRNA Innovation Awards Recognize Research Excellence",
+   "url": "https://www.globenewswire.com/news-release/2026/11/18/3405917/0/en/nthu-develops-human-protein-based-mrna-delivery-system-for-cancer-immunotherapy.html",
+   "symbols": [
+    "MRNA"
+   ],
+   "tags": [],
+   "createdAt": "2026-11-19T00:02:44Z"
+  }
+ ]
+}
