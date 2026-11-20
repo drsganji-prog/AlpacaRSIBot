@@ -1,0 +1,44 @@
+# Runs the morning scan at 6:15 AM Los Angeles time, every day.
+# GitHub cron uses UTC, so two schedules cover PST and PDT; the script skips
+# whichever one isn't 6 AM local. Scheduled runs can start a few minutes late.
+name: Daily morning scan
+
+on:
+  schedule:
+    - cron: "15 13 * * *"   # 6:15 AM PDT (summer)
+    - cron: "15 14 * * *"   # 6:15 AM PST (winter)
+  workflow_dispatch:         # "Run workflow" button for a test run anytime
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run scan
+        env:
+          ALPACA_KEY_ID: ${{ secrets.ALPACA_KEY_ID }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          FORCE: ${{ github.event_name == 'workflow_dispatch' }}
+        run: python scripts/daily_scan.py
+
+      - name: Save results for the app
+        run: |
+          git config user.name "morning-scan-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scan/latest.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No new results to commit."
+          else
+            git commit -m "Morning scan $(TZ=America/Los_Angeles date +%F)"
+            git push
+          fi
