@@ -1,12 +1,12 @@
-# Runs the morning scan at 6:15 AM Los Angeles time, every day.
+# Runs the morning scan at 6:15 AM Los Angeles time, Monday-Friday.
 # GitHub cron uses UTC, so two schedules cover PST and PDT; the script skips
 # whichever one isn't 6 AM local. Scheduled runs can start a few minutes late.
 name: Daily morning scan
 
 on:
   schedule:
-    - cron: "15 13 * * *"   # 6:15 AM PDT (summer)
-    - cron: "15 14 * * *"   # 6:15 AM PST (winter)
+    - cron: "15 13 * * 1-5"   # 6:15 AM PDT (summer), Mon-Fri
+    - cron: "15 14 * * 1-5"   # 6:15 AM PST (winter), Mon-Fri
   workflow_dispatch:         # "Run workflow" button for a test run anytime
 
 permissions:
