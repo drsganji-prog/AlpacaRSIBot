@@ -28,6 +28,7 @@ jobs:
           ALPACA_KEY_ID: ${{ secrets.ALPACA_KEY_ID }}
           ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
           FORCE: ${{ github.event_name == 'workflow_dispatch' }}
         run: python scripts/daily_scan.py
 
