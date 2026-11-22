@@ -1,0 +1,26 @@
+# One-click test: Actions tab -> "Send test notification + email" -> Run workflow.
+# Sends a short message to your phone (NTFY_TOPIC) and inbox (REPORT_EMAIL).
+# Doesn't run the scan or change any files.
+name: Send test notification + email
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Send test message
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+        run: |
+          if [ -z "$NTFY_TOPIC" ]; then echo "NTFY_TOPIC secret is missing"; exit 1; fi
+          args=(-H "Title: Morning scan test" -H "Tags: test_tube")
+          if [ -n "$REPORT_EMAIL" ]; then args+=(-H "Email: $REPORT_EMAIL"); else echo "REPORT_EMAIL not set; push only."; fi
+          now=$(TZ=America/Los_Angeles date '+%a %b %-d, %-I:%M %p PT')
+          curl -sS --fail-with-body "${args[@]}" \
+            -d "Test from AlpacaRSIBot at $now. If this arrived by push and email, the morning scan will reach you too." \
+            "https://ntfy.sh/$NTFY_TOPIC"
+          echo "Test message sent."
