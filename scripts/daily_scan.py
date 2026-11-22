@@ -305,10 +305,11 @@ def send_notification(r):
     for n in fda_news:
         lines.append("📰 " + n["headline"][:110])
 
+    email = os.environ.get("REPORT_EMAIL", "").strip()
     req = urllib.request.Request(
         "https://ntfy.sh/" + urllib.parse.quote(topic),
         data="\n".join(lines).encode("utf-8"),
-        headers={"Title": "Morning scan " + r["generatedLocal"], "Tags": "chart_with_upwards_trend"},
+        headers={"Title": "Morning scan " + r["generatedLocal"], "Tags": "chart_with_upwards_trend", **({"Email": email} if email else {})},
         method="POST",
     )
     with urllib.request.urlopen(req, timeout=20) as resp:
