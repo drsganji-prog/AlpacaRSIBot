@@ -7,15 +7,17 @@ struct SettingsView: View {
     @State private var keyID = ""
     @State private var secret = ""
     @State private var symbolsText = ""
+    @State private var keyMode: AccountMode = .paper
     @State private var confirmLive = false
     @State private var testResult: String?
     @State private var testing = false
 
-    private var modeBinding: Binding<Bool> {
+    /// Turning live auto-trade on asks first; turning it off is immediate.
+    private var liveAutoTradeBinding: Binding<Bool> {
         Binding(
-            get: { store.settings.paper },
-            set: { paper in
-                if paper { store.settings.paper = true } else { confirmLive = true }
+            get: { store.settings.liveAutoTrade },
+            set: { on in
+                if on { confirmLive = true } else { store.settings.liveAutoTrade = false }
             }
         )
     }
@@ -24,20 +26,10 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Account", selection: modeBinding) {
-                        Text("Paper").tag(true)
-                        Text("Live").tag(false)
+                    Picker("Keys for", selection: $keyMode) {
+                        ForEach(AccountMode.allCases) { Text($0.title).tag($0) }
                     }
                     .pickerStyle(.segmented)
-                } header: {
-                    Text("Trading mode")
-                } footer: {
-                    Text(store.settings.paper
-                         ? "Simulated money. Safe for testing."
-                         : "⚠️ LIVE: the bot places real orders with real money.")
-                }
-
-                Section {
                     TextField("API Key ID", text: $keyID)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
@@ -58,9 +50,9 @@ struct SettingsView: View {
                         Text(testResult).font(.footnote).foregroundStyle(.secondary)
                     }
                 } header: {
-                    Text("\(store.settings.paper ? "Paper" : "Live") API keys")
+                    Text("API keys")
                 } footer: {
-                    Text("From the Alpaca dashboard → API Keys. Paper and live keys are different and are stored separately in the iPhone Keychain.")
+                    Text("From the Alpaca dashboard → API Keys. Paper and live accounts have different keys; each pair is stored separately in the iPhone Keychain.")
                 }
 
                 Section {
@@ -76,31 +68,43 @@ struct SettingsView: View {
                             value: $store.settings.oversold, in: 5...50, step: 1)
                     Stepper("Sell when RSI ≥ \(Int(store.settings.overbought))",
                             value: $store.settings.overbought, in: 50...95, step: 1)
+                    Stepper(store.settings.stopLossPct == 0 ? "Stop-loss: off" : "Stop-loss: \(Int(store.settings.stopLossPct))%",
+                            value: $store.settings.stopLossPct, in: 0...50, step: 1)
                 } header: {
                     Text("Strategy: RSI mean reversion")
                 } footer: {
-                    Text("Stock symbols, separated by commas.")
-                }
-
-                Section {
-                    HStack {
-                        Text("Dollars per trade")
-                        Spacer()
-                        TextField("100", value: $store.settings.dollarsPerTrade, format: .number)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(maxWidth: 120)
-                    }
-                    Stepper(store.settings.stopLossPct == 0 ? "Stop-loss: off" : "Stop-loss: \(Int(store.settings.stopLossPct))%",
-                            value: $store.settings.stopLossPct, in: 0...50, step: 1)
-                    Stepper("Max open positions: \(store.settings.maxOpenPositions)",
-                            value: $store.settings.maxOpenPositions, in: 1...20)
-                } header: {
-                    Text("Risk")
+                    Text("Stock symbols, separated by commas. The same signals are used for both accounts.")
                 }
 
                 Section {
                     Toggle("Auto-trade (place orders)", isOn: $store.settings.autoTrade)
+                    dollarsField(value: $store.settings.dollarsPerTrade)
+                    Stepper("Max open positions: \(store.settings.maxOpenPositions)",
+                            value: $store.settings.maxOpenPositions, in: 1...20)
+                } header: {
+                    HStack { ModeBadge(paper: true); Text("Paper account") }
+                } footer: {
+                    Text("Simulated money. Safe for testing.")
+                }
+
+                Section {
+                    Toggle("Show live account", isOn: $store.settings.liveEnabled)
+                    if store.settings.liveEnabled {
+                        Toggle("Live auto-trade (real orders)", isOn: liveAutoTradeBinding)
+                            .tint(.red)
+                        dollarsField(value: $store.settings.liveDollarsPerTrade)
+                        Stepper("Max open positions: \(store.settings.liveMaxOpenPositions)",
+                                value: $store.settings.liveMaxOpenPositions, in: 1...20)
+                    }
+                } header: {
+                    HStack { ModeBadge(paper: false); Text("Live account") }
+                } footer: {
+                    Text(store.settings.liveAutoTrade && store.settings.liveEnabled
+                         ? "⚠️ The bot places real orders with real money on the live account."
+                         : "With auto-trade off, the live account is shown and gets signals, but no orders are placed.")
+                }
+
+                Section {
                     Stepper("Check every \(store.settings.intervalMinutes) min",
                             value: $store.settings.intervalMinutes, in: 1...60)
                     Toggle("Keep screen on while running", isOn: $store.settings.keepScreenOn)
@@ -115,36 +119,51 @@ struct SettingsView: View {
                 loadKeys()
                 symbolsText = store.settings.symbols.joined(separator: ", ")
             }
-            .onChange(of: store.settings.paper) {
+            .onChange(of: keyMode) {
                 loadKeys()
                 testResult = nil
+            }
+            .onChange(of: store.settings.liveEnabled) {
+                if !store.settings.liveEnabled { store.settings.liveAutoTrade = false }
             }
             .onChange(of: symbolsText) {
                 store.settings.symbols = symbolsText
                     .split(whereSeparator: { $0 == "," || $0 == " " })
                     .map(String.init)
             }
-            .alert("Switch to LIVE trading?", isPresented: $confirmLive) {
-                Button("Use live account", role: .destructive) { store.settings.paper = false }
+            .alert("Turn on LIVE auto-trade?", isPresented: $confirmLive) {
+                Button("Place real orders", role: .destructive) { store.settings.liveAutoTrade = true }
                 Button("Cancel", role: .cancel) {}
             } message: {
-                Text("The bot will place real orders with real money. Test on paper first.")
+                Text("The bot will buy and sell with real money on your live account, up to \(money(store.settings.liveDollarsPerTrade)) per trade and \(store.settings.liveMaxOpenPositions) position(s) at a time. Test on paper first.")
             }
         }
     }
 
+    private func dollarsField(value: Binding<Double>) -> some View {
+        HStack {
+            Text("Dollars per trade")
+            Spacer()
+            TextField("100", value: value, format: .number)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: 120)
+        }
+    }
+
     private func loadKeys() {
-        keyID = store.keyID(paper: store.settings.paper)
-        secret = store.secret(paper: store.settings.paper)
+        keyID = store.keyID(keyMode)
+        secret = store.secret(keyMode)
     }
 
     private func saveAndTest() async {
-        store.setKeys(id: keyID, secret: secret, paper: store.settings.paper)
+        store.setKeys(id: keyID, secret: secret, for: keyMode)
         testing = true
         defer { testing = false }
         do {
-            let account = try await engine.makeClient().account()
-            testResult = "✅ Connected. Status \(account.status), equity \(money(account.equityValue))."
+            guard let client = engine.client(for: keyMode) else { throw AlpacaError.missingKeys }
+            let account = try await client.account()
+            testResult = "✅ \(keyMode.title) connected. Status \(account.status), equity \(money(account.equityValue))."
             await engine.refresh()
         } catch {
             testResult = "❌ \(error.localizedDescription)"
