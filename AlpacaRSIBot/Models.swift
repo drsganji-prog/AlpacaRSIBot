@@ -179,14 +179,28 @@ struct Signal: Identifiable {
         case buy = "BUY", sell = "SELL", hold = "HOLD"
     }
 
+    /// What the bot decided for one account (paper or live) on this symbol.
+    struct Decision: Identifiable {
+        var id: String { account.rawValue }
+        let account: AccountMode
+        let action: Action
+        let reason: String
+        var note: String?
+    }
+
     var id: String { symbol }
     let symbol: String
     let price: Double?
     let rsi: Double?
-    let action: Action
-    let reason: String
-    var note: String?
+    var decisions: [Decision] = []
+    var info: String?              // e.g. "Not enough price data", when there is no decision
     let time = Date()
+
+    /// The strongest action across accounts, for the badge.
+    var action: Action {
+        decisions.first(where: { $0.action == .sell })?.action
+            ?? decisions.first(where: { $0.action == .buy })?.action ?? .hold
+    }
 }
 
 struct LogEntry: Identifiable {
