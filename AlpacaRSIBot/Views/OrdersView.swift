@@ -2,16 +2,31 @@ import SwiftUI
 
 struct OrdersView: View {
     @EnvironmentObject var engine: BotEngine
+    @EnvironmentObject var store: SettingsStore
+    @State private var mode: AccountMode = .paper
 
     var body: some View {
         NavigationStack {
+            let orders = engine.state(mode).orders
             Group {
-                if engine.orders.isEmpty {
-                    ContentUnavailableView("No orders yet", systemImage: "list.bullet.rectangle")
+                if orders.isEmpty {
+                    ContentUnavailableView("No \(mode.title.lowercased()) orders yet", systemImage: "list.bullet.rectangle")
                 } else {
-                    List(engine.orders) { OrderRow(order: $0) }
+                    List(orders) { OrderRow(order: $0) }
                 }
             }
+            .safeAreaInset(edge: .top) {
+                if store.settings.liveEnabled {
+                    Picker("Account", selection: $mode) {
+                        ForEach(AccountMode.allCases) { Text($0.title).tag($0) }
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+                    .padding(.bottom, 6)
+                    .background(.bar)
+                }
+            }
+            .onChange(of: store.settings.liveEnabled) { if !store.settings.liveEnabled { mode = .paper } }
             .navigationTitle("Orders")
             .refreshable { await engine.refresh() }
         }
