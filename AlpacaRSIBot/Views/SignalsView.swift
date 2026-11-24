@@ -65,9 +65,20 @@ struct SignalRow: View {
                 ProgressView(value: min(max(rsi, 0), 100), total: 100)
                     .tint(rsiColor)
             }
-            Text(signal.reason).font(.caption)
-            if let note = signal.note {
-                Text(note).font(.caption).foregroundStyle(.orange)
+            if let info = signal.info {
+                Text(info).font(.caption)
+            }
+            ForEach(signal.decisions) { d in
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 6) {
+                        ModeBadge(paper: d.account.isPaper)
+                        if d.action != .hold { ActionBadge(action: d.action) }
+                        Text(d.reason).font(.caption)
+                    }
+                    if let note = d.note {
+                        Text(note).font(.caption).foregroundStyle(.orange)
+                    }
+                }
             }
         }
         .padding(.vertical, 2)
