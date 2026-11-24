@@ -89,6 +89,10 @@ struct AccountSection: View {
     let state: AccountState
     let autoTrade: Bool
 
+    private var message: String {
+        state.error ?? "Add your \(mode.title.lowercased()) API keys in Settings, then pull down to refresh."
+    }
+
     var body: some View {
         Section {
             if let a = state.account {
@@ -105,9 +109,9 @@ struct AccountSection: View {
                     ForEach(state.positions) { PositionRow(position: $0) }
                 }
             } else {
-                Text(state.error ?? "Add your \(mode.title.lowercased()) API keys in Settings, then pull down to refresh.")
+                Text(message)
                     .font(.footnote)
-                    .foregroundStyle(state.error == nil ? .secondary : .red)
+                    .foregroundStyle(state.error == nil ? Color.secondary : Color.red)
             }
         } header: {
             HStack {
@@ -115,7 +119,7 @@ struct AccountSection: View {
                 Text("\(mode.title) account")
                 Spacer()
                 Text(autoTrade ? "Auto-trade ON" : "Signals only")
-                    .foregroundStyle(autoTrade && !mode.isPaper ? .red : .secondary)
+                    .foregroundStyle(autoTrade && !mode.isPaper ? Color.red : Color.secondary)
             }
         }
     }
