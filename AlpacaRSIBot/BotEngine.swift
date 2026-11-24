@@ -2,18 +2,27 @@ import Foundation
 import UIKit
 import BackgroundTasks
 
-/// Runs the RSI mean-reversion strategy:
-///  • No position + RSI ≤ oversold  → market BUY (dollarsPerTrade worth of whole shares)
+/// One Alpaca account as last fetched.
+struct AccountState {
+    var account: Account?
+    var positions: [Position] = []
+    var orders: [Order] = []
+    var error: String?
+}
+
+/// Runs the RSI mean-reversion strategy on the paper account and, when enabled, the live account.
+/// RSI is computed once per symbol; each account then decides with its own positions and limits:
+///  • No position + RSI ≤ oversold  → market BUY (that account's dollars per trade, whole shares)
 ///  • Position + RSI ≥ overbought   → market SELL the whole position
 ///  • Position down ≥ stopLossPct   → market SELL the whole position
+/// Orders are placed only for accounts whose auto-trade is on (live is off by default).
 @MainActor
 final class BotEngine: ObservableObject {
     static let shared = BotEngine()
     nonisolated static let backgroundTaskID = "com.example.AlpacaRSIBot.refresh"
 
-    @Published var account: Account?
-    @Published var positions: [Position] = []
-    @Published var orders: [Order] = []
+    @Published var paper = AccountState()
+    @Published var live = AccountState()
     @Published var signals: [Signal] = []
     @Published var log: [LogEntry] = []
     @Published var clock: Clock?
@@ -26,12 +35,26 @@ final class BotEngine: ObservableObject {
     private let store = SettingsStore.shared
     private var settings: BotSettings { store.settings }
 
+    func state(_ m: AccountMode) -> AccountState { m.isPaper ? paper : live }
+
+    private func update(_ m: AccountMode, _ change: (inout AccountState) -> Void) {
+        if m.isPaper { change(&paper) } else { change(&live) }
+    }
+
+    /// Accounts the app is watching: paper, plus live when it's switched on in Settings.
+    var activeModes: [AccountMode] {
+        AccountMode.allCases.filter { $0.isPaper || settings.liveEnabled }
+    }
+
+    func client(for m: AccountMode) -> AlpacaClient? {
+        guard store.hasKeys(m) else { return nil }
+        return AlpacaClient(keyID: store.keyID(m), secret: store.secret(m), paper: m.isPaper)
+    }
+
+    /// Client for market data (prices, news, screeners): paper keys if set, otherwise live keys.
     func makeClient() throws -> AlpacaClient {
-        let paper = settings.paper
-        let id = store.keyID(paper: paper)
-        let secret = store.secret(paper: paper)
-        guard !id.isEmpty, !secret.isEmpty else { throw AlpacaError.missingKeys }
-        return AlpacaClient(keyID: id, secret: secret, paper: paper)
+        if let c = client(for: .paper) ?? client(for: .live) { return c }
+        throw AlpacaError.missingKeys
     }
 
     // MARK: Start / stop
@@ -40,7 +63,8 @@ final class BotEngine: ObservableObject {
         guard loopTask == nil else { return }
         isRunning = true
         UIApplication.shared.isIdleTimerDisabled = settings.keepScreenOn
-        addLog("Bot started — \(settings.paper ? "paper" : "LIVE") account, auto-trade \(settings.autoTrade ? "ON" : "off")", .info)
+        let modes = activeModes.map { "\($0.title) auto-trade \(settings.autoTrade($0) ? "ON" : "off")" }
+        addLog("Bot started: " + modes.joined(separator: ", "), .info)
 
         loopTask = Task { [weak self] in
             while !Task.isCancelled {
@@ -63,21 +87,38 @@ final class BotEngine: ObservableObject {
     // MARK: Refresh (no strategy)
 
     func refresh() async {
-        do {
-            let client = try makeClient()
-            async let a = client.account()
-            async let c = client.clock()
-            async let p = client.positions()
-            async let o = client.orders(status: "all", limit: 50)
-            let (acct, clk, pos, ords) = try await (a, c, p, o)
-            account = acct; clock = clk; positions = pos; orders = ords
-            lastError = nil
-        } catch {
-            lastError = error.localizedDescription
+        guard let data = try? makeClient() else {
+            lastError = AlpacaError.missingKeys.localizedDescription
+            return
         }
+        clock = try? await data.clock()
+        for m in AccountMode.allCases {
+            guard activeModes.contains(m), let api = client(for: m) else {
+                update(m) { $0 = AccountState() }
+                continue
+            }
+            do {
+                async let a = api.account()
+                async let p = api.positions()
+                async let o = api.orders(status: "all", limit: 50)
+                let (acct, pos, ords) = try await (a, p, o)
+                update(m) { $0 = AccountState(account: acct, positions: pos, orders: ords) }
+            } catch {
+                update(m) { $0.error = error.localizedDescription }
+            }
+        }
+        lastError = nil
     }
 
     // MARK: Strategy cycle
+
+    private struct Context {
+        let client: AlpacaClient
+        var positions: [Position]
+        let pending: Set<String>
+        var openCount: Int
+        let blocked: Bool
+    }
 
     func runCycle(allowTrading: Bool) async {
         guard !isBusy else { return }
@@ -86,105 +127,130 @@ final class BotEngine: ObservableObject {
 
         let s = settings
         do {
-            let client = try makeClient()
-            async let a = client.account()
-            async let c = client.clock()
-            async let p = client.positions()
-            async let o = client.orders(status: "open", limit: 100)
-            let (acct, clk, pos, openOrders) = try await (a, c, p, o)
-            account = acct; clock = clk; positions = pos
+            let data = try makeClient()
+            let clk = try await data.clock()
+            clock = clk
 
-            let pendingSymbols = Set(openOrders.map(\.symbol))
-            var openPositionCount = pos.count
-            let blocked = acct.tradingBlocked ?? false
+            // Each watched account: its positions and pending orders.
+            var ctx: [AccountMode: Context] = [:]
+            for m in activeModes {
+                guard let api = client(for: m) else {
+                    update(m) { $0 = AccountState(error: "Add your \(m.title.lowercased()) API keys in Settings.") }
+                    continue
+                }
+                do {
+                    async let a = api.account()
+                    async let p = api.positions()
+                    async let o = api.orders(status: "open", limit: 100)
+                    let (acct, pos, open) = try await (a, p, o)
+                    update(m) { $0.account = acct; $0.positions = pos; $0.error = nil }
+                    ctx[m] = Context(client: api, positions: pos, pending: Set(open.map(\.symbol)),
+                                     openCount: pos.count, blocked: acct.tradingBlocked ?? false)
+                } catch {
+                    update(m) { $0.error = error.localizedDescription }
+                }
+            }
+
             let start = Date().addingTimeInterval(-Double(s.lookbackDays) * 86_400)
             let limit = max(s.rsiPeriod * 10, 200)
             var newSignals: [Signal] = []
 
             for symbol in s.cleanSymbols {
+                let bars: [Bar]
                 do {
-                    let bars = try await client.bars(symbol: symbol, timeframe: s.timeframe, start: start, limit: limit)
-                    let closes = bars.map(\.c)
-                    guard let price = closes.last,
-                          let rsi = RSI.compute(closes: closes, period: s.rsiPeriod) else {
-                        newSignals.append(Signal(symbol: symbol, price: closes.last, rsi: nil, action: .hold,
-                                                 reason: "Not enough price data (\(closes.count) bars)"))
-                        continue
-                    }
-
-                    let position = pos.first { $0.symbol == symbol }
-                    var action: Signal.Action = .hold
-                    let reason: String
-
-                    if let position {
-                        let entry = position.avgEntryValue
-                        let plPct = entry > 0 ? (price - entry) / entry * 100 : 0
-                        if rsi >= s.overbought {
-                            action = .sell
-                            reason = "RSI \(fmt(rsi)) ≥ \(fmt(s.overbought, 0)): overbought, take profit/exit"
-                        } else if s.stopLossPct > 0 && plPct <= -s.stopLossPct {
-                            action = .sell
-                            reason = "Stop-loss hit: \(fmt(plPct))% from entry"
-                        } else {
-                            reason = "Holding \(position.qty) sh, P/L \(fmt(plPct))%. Sell at RSI ≥ \(fmt(s.overbought, 0))"
-                        }
-                    } else if rsi <= s.oversold {
-                        if openPositionCount >= s.maxOpenPositions {
-                            reason = "Oversold, but max \(s.maxOpenPositions) positions reached"
-                        } else if Int(s.dollarsPerTrade / price) < 1 {
-                            reason = "Oversold, but \(money(s.dollarsPerTrade)) buys less than 1 share"
-                        } else {
-                            action = .buy
-                            reason = "RSI \(fmt(rsi)) ≤ \(fmt(s.oversold, 0)): oversold, buy the dip"
-                        }
-                    } else {
-                        reason = "Waiting for RSI ≤ \(fmt(s.oversold, 0))"
-                    }
-
-                    var signal = Signal(symbol: symbol, price: price, rsi: rsi, action: action, reason: reason)
-
-                    if action != .hold {
-                        if pendingSymbols.contains(symbol) {
-                            signal.note = "Skipped: an order is already pending"
-                        } else if !allowTrading {
-                            signal.note = "Scan only, no order placed"
-                        } else if !s.autoTrade {
-                            signal.note = "Auto-trade is off, no order placed"
-                        } else if !clk.isOpen {
-                            signal.note = "Market closed, no order placed"
-                        } else if blocked {
-                            signal.note = "Account is blocked from trading"
-                        } else {
-                            let side = action == .buy ? "buy" : "sell"
-                            let qty = action == .buy ? String(Int(s.dollarsPerTrade / price)) : (position?.qty ?? "0")
-                            do {
-                                let order = try await client.submitMarketOrder(symbol: symbol, qty: qty, side: side)
-                                signal.note = "Order submitted (\(order.status))"
-                                openPositionCount += action == .buy ? 1 : -1
-                                let msg = "\(side.uppercased()) \(qty) \(symbol) @ ~\(money(price)). \(reason)"
-                                addLog(msg, .trade)
-                                Notifier.send("\(s.paper ? "[Paper] " : "")\(side.uppercased()) \(symbol)", msg)
-                            } catch {
-                                signal.note = "Order failed: \(error.localizedDescription)"
-                                addLog("\(symbol) \(side) failed: \(error.localizedDescription)", .error)
-                            }
-                        }
-                    }
-                    newSignals.append(signal)
+                    bars = try await data.bars(symbol: symbol, timeframe: s.timeframe, start: start, limit: limit)
                 } catch {
-                    newSignals.append(Signal(symbol: symbol, price: nil, rsi: nil, action: .hold,
-                                             reason: "Data error: \(error.localizedDescription)"))
+                    newSignals.append(Signal(symbol: symbol, price: nil, rsi: nil,
+                                             info: "Data error: \(error.localizedDescription)"))
+                    continue
                 }
+                let closes = bars.map(\.c)
+                guard let price = closes.last, let rsi = RSI.compute(closes: closes, period: s.rsiPeriod) else {
+                    newSignals.append(Signal(symbol: symbol, price: closes.last, rsi: nil,
+                                             info: "Not enough price data (\(closes.count) bars)"))
+                    continue
+                }
+
+                var signal = Signal(symbol: symbol, price: price, rsi: rsi)
+                for m in activeModes {
+                    guard var c = ctx[m] else { continue }
+                    var d = decide(m, symbol: symbol, price: price, rsi: rsi, ctx: c, s: s)
+                    if d.action != .hold {
+                        d.note = await execute(m, d, symbol: symbol, price: price, ctx: &c,
+                                               allowTrading: allowTrading, marketOpen: clk.isOpen, s: s)
+                        ctx[m] = c
+                    }
+                    signal.decisions.append(d)
+                }
+                newSignals.append(signal)
             }
 
             signals = newSignals
             lastRun = Date()
             lastError = nil
-            if let recent = try? await client.orders(status: "all", limit: 50) { orders = recent }
-            if let updated = try? await client.positions() { positions = updated }
+            for (m, c) in ctx {
+                let ords = try? await c.client.orders(status: "all", limit: 50)
+                let pos = try? await c.client.positions()
+                update(m) { st in
+                    if let ords { st.orders = ords }
+                    if let pos { st.positions = pos }
+                }
+            }
         } catch {
             lastError = error.localizedDescription
             addLog(error.localizedDescription, .error)
+        }
+    }
+
+    private func decide(_ m: AccountMode, symbol: String, price: Double, rsi: Double,
+                        ctx: Context, s: BotSettings) -> Signal.Decision {
+        if let position = ctx.positions.first(where: { $0.symbol == symbol }) {
+            let entry = position.avgEntryValue
+            let plPct = entry > 0 ? (price - entry) / entry * 100 : 0
+            if rsi >= s.overbought {
+                return .init(account: m, action: .sell, reason: "RSI \(fmt(rsi)) ≥ \(fmt(s.overbought, 0)): overbought, exit")
+            }
+            if s.stopLossPct > 0 && plPct <= -s.stopLossPct {
+                return .init(account: m, action: .sell, reason: "Stop-loss hit: \(fmt(plPct))% from entry")
+            }
+            return .init(account: m, action: .hold,
+                         reason: "Holding \(position.qty) sh, P/L \(fmt(plPct))%. Sell at RSI ≥ \(fmt(s.overbought, 0))")
+        }
+        guard rsi <= s.oversold else {
+            return .init(account: m, action: .hold, reason: "Waiting for RSI ≤ \(fmt(s.oversold, 0))")
+        }
+        if ctx.openCount >= s.maxPositions(m) {
+            return .init(account: m, action: .hold, reason: "Oversold, but max \(s.maxPositions(m)) positions reached")
+        }
+        if Int(s.dollars(m) / price) < 1 {
+            return .init(account: m, action: .hold, reason: "Oversold, but \(money(s.dollars(m))) buys less than 1 share")
+        }
+        return .init(account: m, action: .buy, reason: "RSI \(fmt(rsi)) ≤ \(fmt(s.oversold, 0)): oversold, buy the dip")
+    }
+
+    /// Places the order when allowed; returns the note to show under the decision.
+    private func execute(_ m: AccountMode, _ d: Signal.Decision, symbol: String, price: Double,
+                         ctx: inout Context, allowTrading: Bool, marketOpen: Bool, s: BotSettings) async -> String {
+        if ctx.pending.contains(symbol) { return "Skipped: an order is already pending" }
+        if !allowTrading { return "Scan only, no order placed" }
+        if !s.autoTrade(m) { return "\(m.title) auto-trade is off, no order placed" }
+        if !marketOpen { return "Market closed, no order placed" }
+        if ctx.blocked { return "Account is blocked from trading" }
+
+        let side = d.action == .buy ? "buy" : "sell"
+        let qty = d.action == .buy
+            ? String(Int(s.dollars(m) / price))
+            : (ctx.positions.first { $0.symbol == symbol }?.qty ?? "0")
+        do {
+            let order = try await ctx.client.submitMarketOrder(symbol: symbol, qty: qty, side: side)
+            ctx.openCount += d.action == .buy ? 1 : -1
+            let msg = "[\(m.title.uppercased())] \(side.uppercased()) \(qty) \(symbol) @ ~\(money(price)). \(d.reason)"
+            addLog(msg, .trade)
+            Notifier.send("[\(m.title)] \(side.uppercased()) \(symbol)", msg)
+            return "Order submitted (\(order.status))"
+        } catch {
+            addLog("[\(m.title.uppercased())] \(symbol) \(side) failed: \(error.localizedDescription)", .error)
+            return "Order failed: \(error.localizedDescription)"
         }
     }
 
